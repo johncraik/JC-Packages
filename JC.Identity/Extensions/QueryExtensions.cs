@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
+using JC.Core.Enums;
 using JC.Core.Models;
+using JC.Identity.Authentication;
 using JC.Identity.Models;
 using JC.Identity.Models.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,11 @@ namespace JC.Identity.Extensions;
 
 public static class QueryExtensions
 {
+    public static IQueryable<T> AllTenants<T>(this IQueryable<T> query, IUserInfo userInfo)
+        where T : class
+        => userInfo.IsInRole(SystemRoles.SystemAdmin) ? query.IgnoreQueryFilters() : query; 
+    
+    
     /// <summary>
     /// Applies global tenant query filters to all entities implementing IMultiTenancy.
     /// If tenantId is null/empty, filters to entities where TenantId is null.

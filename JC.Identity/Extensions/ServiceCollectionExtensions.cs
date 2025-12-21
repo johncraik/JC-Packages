@@ -1,7 +1,9 @@
+using JC.Core.Extensions;
 using JC.Core.Models;
 using JC.Identity.Authentication;
 using JC.Identity.Extensions.Options;
 using JC.Identity.Models;
+using JC.Identity.Models.MultiTenancy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -19,7 +21,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddAuthorization();
         services.AddAuthentication();
-        
+
         // Register IUserInfo as scoped (per-request)
         services.TryAddScoped<IUserInfo, TUserInfo>();
 
@@ -35,7 +37,10 @@ public static class ServiceCollectionExtensions
 
         // Replace default claims principal factory with our custom one
         services.AddScoped<IUserClaimsPrincipalFactory<TUser>, DefaultClaimsPrincipalFactory<TUser, TRole>>();
-        
+
+        // Register Tenant repository
+        services.RegisterRepositoryContext<Tenant>();
+
         return services;
     }
 

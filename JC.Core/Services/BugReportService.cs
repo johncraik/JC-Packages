@@ -3,7 +3,7 @@ using JC.Core.Helpers;
 using JC.Core.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace JC.Core.Service;
+namespace JC.Core.Services;
 
 public class BugReportService
 {
